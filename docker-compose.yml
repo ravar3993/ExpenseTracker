@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  mongodb_container:
+    image: mongo:3.6
+    environment:
+      MONGO_INITDB_USERNAME: root
+      MONGO_INITDB_PASSWORD: root
+       MONGO_INITDB_DATABASE: et_db
+    ports:
+      - 27017:27017
+    volumes:
+      - et_db_vol:/data/db
+
+volumes:
+  et_db_vol:

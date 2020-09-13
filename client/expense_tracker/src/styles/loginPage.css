@@ -1,0 +1,132 @@
+.login-page {
+    align-items: center;
+    width:650px;
+    margin-top:30px;
+    height: 780px;
+    border-style: outset;
+    position: relative;
+    left:30%;
+}
+
+/* .login-page #account-query {
+    padding:5px;
+    margin-right: 20px;
+} */
+
+.signInForm, .signUpForm {
+    margin-left: 35px;
+    height: 500px;
+}
+
+.signInForm input[type=text], .signUpForm input[type=text] {
+    padding: 0;
+    height: 30px;
+    position: relative;
+    left: 0;
+    outline: none;
+    border: 1px solid #cdcdcd;
+    border-color: rgba(0, 0, 0, .15);
+    background-color: white;
+    font-size: 16px;
+  }
+
+
+.signUpForm td, .signInForm td{
+    display: table;
+    padding: 0px;
+}
+
+.signUpForm td span, .signInForm td span{
+    display: table;
+    font-size: 15px;
+}
+
+.signInForm tr, .signUpForm tr {
+    display:table;
+    padding: 5px;
+}
+
+.signInForm button[type=submit], .signUpForm button[type=submit]{
+    padding: 12px;
+ 
+    background: #0066A2;
+
+    color: white;
+    
+    border-color: #0066A2;
+    font: bold 18px arial, sans-serif;
+
+    text-shadow:none;
+}
+
+.signInForm input[type=text], .signUpForm input[type=text] {
+    width: 530px;
+} 
+
+.signInForm button[type=submit], .signUpForm button[type=submit] {
+    width:532px;
+}
+
+.account-query, .forgot-password {
+    margin-right: 45px;
+    margin-left: 50px;
+/*    border: 1px solid #cdcdcd;*/
+}
+
+.account-query button, .forgot-password button{
+    width: 280px;
+    height: 30px;
+    margin-left: 10px;
+    border:none;
+    text-shadow: none;
+    border-color: #0066A2;
+    background: #0066A2;
+    color: white;
+    font: bold 15px arial, sans-serif;
+}
+
+.account-query table, .forgot-password table {
+    table-layout: fixed;
+    width: 450px;
+  }
+
+
+/* .forgot-password button {
+    padding:4px 100px;
+    margin-left: 25px;
+    border:none;
+    border-style: outset;
+    text-shadow: none;
+    border-color: #0066A2;
+    background: #0066A2;
+    color: white;
+    font: bold 15px arial, sans-serif;
+} */
+
+
+.account-query span, .forgot-password span {
+    padding:5px;
+    margin-right:20px;
+}
+
+/* .forgot-password span {
+    margin-right: 59px;
+    padding: 5px;
+} */
+
+#login-title {
+    text-align: center;
+    background-color: #0066A2;
+    padding: 10px;
+    margin-right: 25px;
+    margin-left: 25px;
+    color: rgb(252, 247, 247);
+}
+
+#login-tag {
+    background-color: #0066A2;
+    padding: 20px;
+    margin-right: 470px;
+    color: white;
+    text-align: center;
+}
