@@ -22,7 +22,7 @@ class SignUp extends Component {
         body: formData
       }
       e.preventDefault()
-      fetch(configData.SERVER_URL + "/login/api/sign_up/", fetchData)
+      fetch(configData.SERVER_URL + "/user/api/sign_up/", fetchData)
         .then(res => res.json())
         .then(
           (result) => {

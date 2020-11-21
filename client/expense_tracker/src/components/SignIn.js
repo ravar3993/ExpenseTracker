@@ -23,7 +23,7 @@ class SignIn extends Component {
         body: formData
       }
       e.preventDefault()
-      fetch(configData.SERVER_URL + "/login/api/sign_in/", fetchData)
+      fetch(configData.SERVER_URL + "/user/api/sign_in/", fetchData)
         .then(response => {
           if (response.ok) {
             this.setState({
