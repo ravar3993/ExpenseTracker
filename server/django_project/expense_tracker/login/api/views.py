@@ -5,5 +5,5 @@ from rest_framework.response import Response
 
 @api_view(['GET'])
 def test(request):
-    data = {'Result': 'success'}
+    data = {'Result': 'success1'}
     return Response(data=data, status=status.HTTP_200_OK)
