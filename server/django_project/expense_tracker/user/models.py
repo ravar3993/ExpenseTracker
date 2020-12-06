@@ -2,7 +2,6 @@ import secrets
 
 from django.db import models
 from django.db.models.signals import pre_save
-from django.dispatch import receiver
 
 
 class User(models.Model):
@@ -38,3 +37,6 @@ def update_slug(sender, instance, raw, using, update_fields, **kwargs):
 
 
 pre_save.connect(update_slug, sender=User)
+
+
+

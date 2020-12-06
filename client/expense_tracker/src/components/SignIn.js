@@ -30,6 +30,7 @@ class SignIn extends Component {
               user_validated: true
             })
           }
+          console.log(response)
           return response.json()
         })
         .then(

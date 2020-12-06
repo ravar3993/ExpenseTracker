@@ -70,10 +70,8 @@ def validate_user(user_data):
         try:
             user = User.objects.get(name=user_name, password=user_password)
         except (ObjectDoesNotExist, MultipleObjectsReturned):
-            print("User Invalid")
             return False, None
         else:
-            print("User Validated")
             payload = {'username': user.name, 'password': user.password}
             token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
             return True, token
