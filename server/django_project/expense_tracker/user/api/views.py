@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 
 class SignUp(APIView):
-    headers = {
+    resp_header = {
         "Content-Type": "multipart/form-data",
         "Access-Control-Allow-Origin": '*'
     }
@@ -49,11 +49,11 @@ class SignUp(APIView):
 
         return Response(data={"resp_msg": self.message, "resp_code": self.response_code},
                         status=self.status_code,
-                        headers=self.headers)
+                        headers=self.resp_header)
 
 
 class SignIn(APIView):
-    headers = {
+    resp_header = {
         "Content-Type": "multipart/form-data",
         "Access-Control-Allow-Origin": '*'
     }
@@ -81,7 +81,7 @@ class SignIn(APIView):
 
         return Response(data={"resp_msg": self.message, "resp_code": self.response_code},
                         status=self.status_code,
-                        headers=self.headers)
+                        headers=self.resp_header)
 
 
 
