@@ -1,7 +1,10 @@
 import traceback
 
+import jwt
 from django.core.exceptions import ObjectDoesNotExist, MultipleObjectsReturned
+from rest_framework_jwt.serializers import jwt_payload_handler
 
+from expense_tracker import settings
 from ..models import User
 
 
@@ -54,7 +57,7 @@ def check_user_exists(user_data):
 
 def validate_user(user_data):
     """
-    This is used to validate the sign in credentials
+    This is used to validate the sign in credentials. Also generates the JWT token for user authorization
     :param user_data: <QuerySet> form data contains relevant user info
     :return: boolean
     """
@@ -64,12 +67,16 @@ def validate_user(user_data):
         user_password = user_data['password']
         # Return true if a user exists with given credentials
 
-        if User.objects.filter(name=user_name, password=user_password).count() > 0:
-            print("User Validated")
-            return True
-        else:
+        try:
+            user = User.objects.get(name=user_name, password=user_password)
+        except (ObjectDoesNotExist, MultipleObjectsReturned):
             print("User Invalid")
-            return False
+            return False, None
+        else:
+            print("User Validated")
+            payload = {'username': user.name, 'password': user.password}
+            token = jwt.encode(payload, settings.SECRET_KEY, algorithm='HS256')
+            return True, token
 
     except Exception as e:
         print(e)

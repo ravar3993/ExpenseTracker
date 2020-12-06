@@ -18,34 +18,35 @@ class SignUp(APIView):
     def post(self, request, *args, **kwargs):
         try:
             if request.data['password'] != request.data['confirm_password']:
-                self.message = c.LOGIN_RESPONSE_MSG[2]
+                self.response_code = c.LOGIN_RESPONSE_CODE[2]
                 self.status_code = status.HTTP_400_BAD_REQUEST
-                self.response_code = c.LOGIN_RESPONSE_CODE[self.message]
+                self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
             elif request.data['email'] and request.data['username'] and request.data['password']:
                 if not check_user_exists(request.data):
                     user_registered = register_user(request.data)
                     if user_registered:
-                        self.message = c.LOGIN_RESPONSE_MSG[4]
+                        self.response_code = c.LOGIN_RESPONSE_CODE[4]
                         self.status_code = status.HTTP_200_OK
-                        self.response_code = c.LOGIN_RESPONSE_CODE[self.message]
+                        self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
                     else:
-                        self.message = c.LOGIN_RESPONSE_MSG[5]
+                        self.response_code = c.LOGIN_RESPONSE_CODE[5]
                         self.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-                        self.response_code = c.LOGIN_RESPONSE_CODE[self.message]
+                        self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
                 else:
-                    self.message = c.LOGIN_RESPONSE_MSG[3]
+                    self.response_code = c.LOGIN_RESPONSE_CODE[3]
                     self.status_code = status.HTTP_200_OK
-                    self.response_code = c.LOGIN_RESPONSE_CODE[self.message]
+                    self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
             else:
-                self.message = c.LOGIN_RESPONSE_MSG[6]
+                self.response_code = c.LOGIN_RESPONSE_CODE[6]
                 self.status_code = status.HTTP_400_BAD_REQUEST
-                self.response_code = c.LOGIN_RESPONSE_CODE[self.message]
+                self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
+
         except Exception as e:
             print(e)
             traceback.print_exc()
-            message = c.LOGIN_RESPONSE_MSG[7]
+            self.response_code = c.LOGIN_RESPONSE_CODE[7]
             self.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
-            self.response_code = c.LOGIN_RESPONSE_CODE[message]
+            self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
 
         return Response(data={"resp_msg": self.message, "resp_code": self.response_code},
                         status=self.status_code,
@@ -60,28 +61,30 @@ class SignIn(APIView):
     message = None
     response_code = None
     status_code = None
+    session_token = None
 
     def post(self, request, *args, **kwargs):
         try:
-            if validate_user(request.data):
-                self.message = c.LOGIN_RESPONSE_MSG[0]
-                self.response_code = c.LOGIN_RESPONSE_CODE[self.message]
+            is_validated, session_token = validate_user(request.data)
+            if is_validated:
+                self.response_code = c.LOGIN_RESPONSE_CODE[0]
+                self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
                 self.status_code = status.HTTP_200_OK
+                self.session_token = session_token
             else:
-                self.message = c.LOGIN_RESPONSE_MSG[1]
-                self.response_code = c.LOGIN_RESPONSE_CODE[self.message]
+                self.response_code = c.LOGIN_RESPONSE_CODE[1]
+                self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
                 self.status_code = status.HTTP_200_OK
 
         except Exception as e:
             print(e)
             traceback.print_exc()
-            self.message = c.LOGIN_RESPONSE_MSG[2]
-            self.response_code = c.LOGIN_RESPONSE_CODE[self.message]
+            self.response_code = c.LOGIN_RESPONSE_CODE[2]
+            self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
             self.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
 
-        return Response(data={"resp_msg": self.message, "resp_code": self.response_code},
-                        status=self.status_code,
-                        headers=self.resp_header)
+        resp_data = {"resp_msg": self.message, "resp_code": self.response_code, "token": self.session_token}
+        return Response(data=resp_data, status=self.status_code, headers=self.resp_header)
 
 
 

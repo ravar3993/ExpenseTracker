@@ -10,6 +10,8 @@ django = "*"
 django-urls = "*"
 djongo = "*"
 djangorestframework = "*"
+djangorestframework-simplejwt = "*"
+djangorestframework-jwt = "*"
 
 [requires]
 python_version = "3.6"

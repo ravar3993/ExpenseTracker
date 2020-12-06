@@ -1,21 +1,15 @@
-LOGIN_RESPONSE_MSG = [
-    "user validated",
-    "user invalid",
-    "passwords did not match",
-    "username/email already exists",
-    "user successfully registered",
-    "user registration failed",
-    "blank fields not allowed",
-    "error occurred during registration"
-]
+LOGIN_RESPONSE_CODE = list()
+for i in range(0, 8):
+    LOGIN_RESPONSE_CODE.append(str(i+1).zfill(3))
 
-LOGIN_RESPONSE_CODE = {
-    LOGIN_RESPONSE_MSG[0]: str(1).zfill(3),
-    LOGIN_RESPONSE_MSG[1]: str(2).zfill(3),
-    LOGIN_RESPONSE_MSG[2]: str(3).zfill(3),
-    LOGIN_RESPONSE_MSG[3]: str(4).zfill(3),
-    LOGIN_RESPONSE_MSG[4]: str(5).zfill(3),
-    LOGIN_RESPONSE_MSG[5]: str(6).zfill(3),
-    LOGIN_RESPONSE_MSG[6]: str(7).zfill(3),
-    LOGIN_RESPONSE_MSG[7]: str(8).zfill(3),
+
+LOGIN_RESPONSE_MSG = {
+    LOGIN_RESPONSE_CODE[0]: "user validated",
+    LOGIN_RESPONSE_CODE[1]: "user invalid",
+    LOGIN_RESPONSE_CODE[2]: "passwords did not match",
+    LOGIN_RESPONSE_CODE[3]: "username/email already exists",
+    LOGIN_RESPONSE_CODE[4]: "user successfully registered",
+    LOGIN_RESPONSE_CODE[5]: "user registration failed",
+    LOGIN_RESPONSE_CODE[6]: "blank fields not allowed",
+    LOGIN_RESPONSE_CODE[7]: "error occurred during registration",
 }

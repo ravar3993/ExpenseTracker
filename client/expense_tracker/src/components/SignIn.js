@@ -35,13 +35,11 @@ class SignIn extends Component {
         .then(
           (result) => {
             if (this.state.user_validated){
-              console.log("user validated");
-            }else{
-              console.log("user not validated");
+              localStorage.setItem('token',JSON.stringify(result['token']));
             }
           },
           (error) => {
-            alert(error)
+            console.log(error)
           }
         )
     }
