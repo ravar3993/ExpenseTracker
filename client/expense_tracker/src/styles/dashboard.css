@@ -29,3 +29,12 @@ background: #fff;
     float: right;
     width: 200px;
 }
+
+.user-menu{
+    float: right;
+    width: 150px;
+}
+
+.user-menu .anticon-user{
+    font-size: 30px;
+}

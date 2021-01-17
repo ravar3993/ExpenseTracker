@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
+import Profile from './Profile'
 const { Header, Sider, Content } = Layout;
+
 
 
 class DashboardView extends Component {
@@ -16,6 +18,8 @@ class DashboardView extends Component {
             view_content = "Wallet coming soon!"
         }else if(this.props.view_name === "expense"){
             view_content = "Expense coming soon!"
+        }else if(this.props.view_name === "profile"){
+            view_content = <Profile />
         }
         return (
             <Content

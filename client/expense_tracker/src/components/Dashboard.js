@@ -12,8 +12,8 @@ import {
   UploadOutlined,
 } from '@ant-design/icons';
 
+const { SubMenu } = Menu;
 const { Header, Sider } = Layout;
-
 
 class Dashboard extends Component {
     constructor(){
@@ -24,16 +24,12 @@ class Dashboard extends Component {
         };
         
     }
-    
-    
+      
     toggle = () => {
     this.setState({
         collapsed: !this.state.collapsed,
         });
     };
-
-
-
 
     render() {
     return (
@@ -58,7 +54,16 @@ class Dashboard extends Component {
                 className: 'trigger',
                 onClick: this.toggle,
             })}
-             <div className="header-wallet">
+          
+            <div className="user-menu">
+            <Menu mode="horizontal">
+                <SubMenu key="SubMenu" icon={<UserOutlined />}>
+                    <Menu.Item onClick={() => {this.setState({view_name:"profile"})}}>Profile</Menu.Item>
+                    <Menu.Item >Logout</Menu.Item>
+                </SubMenu>
+            </Menu>
+            </div>
+            <div className="header-wallet">
                 <Wallet />
             </div>
             </Header>
