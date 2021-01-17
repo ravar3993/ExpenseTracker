@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react';
 import configData from "../configData.json"
+import { Statistic } from 'antd';
 
 class Wallet extends PureComponent {
     constructor(){
@@ -40,7 +41,7 @@ class Wallet extends PureComponent {
     render(){
         return (
             <>
-            <p>Wallet Amount : { this.state.wallet_balance } </p>
+            <Statistic title="Wallet Balance" prefix={'\u20B9'} value={ this.state.wallet_balance} precision={2} />
             </>
         )
     }
