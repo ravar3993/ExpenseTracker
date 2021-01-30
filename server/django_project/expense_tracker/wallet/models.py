@@ -18,6 +18,30 @@ class Wallet(models.Model):
         return "Wallet User : {}".format(self.user.name)
 
 
+class WalletActivity(models.Model):
+    """
+    Represents wallet activity that took place with respect to a user
+    """
+    CREDITED = 1
+    DEBITED = 2
+    UPDATED = 3
+
+    ACTIVITIES = [
+        ('CREDITED', )
+    ]
+
+    activity = models.CharField(null=False, max_length=50)
+    amount = models.IntegerField(default=0, null=False)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+
+    class Meta:
+        db_table = "wallet_activity"
+
+    def __str__(self):
+        return "Wallet User : {}".format(self.user.name)
+
+
+
 def create_user_wallet(sender, instance, raw, using, update_fields, **kwargs):
     """
     This is sent at the end of a model’s save() method

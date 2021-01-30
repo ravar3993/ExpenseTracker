@@ -12,8 +12,9 @@ class Wallet extends PureComponent {
     }
     componentDidMount(){
         this.getWalletBalance()
+        setInterval(this.getWalletBalance.bind(this), 3000)
     }
-
+    
     getWalletBalance = () => {
 
         let fetchData = {
@@ -22,16 +23,12 @@ class Wallet extends PureComponent {
         }
         fetch(configData.SERVER_URL + "/wallet/api/balance/", fetchData)
             .then(response => {
-                if (response.ok) {
-                    console.log("ok")
-                }
                 return response.json()
             }).then(
                 (result) => {
                     this.setState({
                         wallet_balance: result['balance']
                     })
-                    console.log(result)
                 },
                 (error) => {
                     console.log(error)

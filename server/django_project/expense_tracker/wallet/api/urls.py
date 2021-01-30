@@ -1,6 +1,6 @@
 from django.urls import path
-from .views import GetWalletBalance
+from .views import WalletBalance
 
 urlpatterns = [
-    path('balance/', GetWalletBalance.as_view())
+    path('balance/', WalletBalance.as_view())
 ]

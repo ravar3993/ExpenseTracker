@@ -38,3 +38,18 @@ background: #fff;
 .user-menu .anticon-user{
     font-size: 30px;
 }
+
+#wallet-balance {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#wallet-balance-form #balance-input{
+    font-size: 24px;
+    margin-left: 5px;
+    height: 36px;
+}
+
+#wallet-balance-form #balance-input-currency{
+    font-size: 24px;
+}

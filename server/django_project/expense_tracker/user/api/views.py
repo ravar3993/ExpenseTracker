@@ -2,8 +2,12 @@ import traceback
 from expense_tracker import constants as c
 from rest_framework import status
 from rest_framework.response import Response
+
+from wallet.models import Wallet
 from .utils import register_user, check_user_exists, validate_user
 from rest_framework.views import APIView
+
+from ..utils import authorize_user_jwt
 
 
 class SignUp(APIView):
@@ -87,4 +91,34 @@ class SignIn(APIView):
         return Response(data=resp_data, status=self.status_code, headers=self.resp_header)
 
 
+class Profile(APIView):
+    resp_header = {
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": '*'
+    }
+    status_code = None
+    profile_data = {}
+
+    def get(self, request, *args, **kwargs):
+        try:
+            # Retrieve all data from request
+            is_authorized, user_obj = authorize_user_jwt(jwt_token=request.headers['Authorization'])
+            if is_authorized:
+                wallet = Wallet.objects.get(user=user_obj)
+                self.profile_data = {
+                    "username": user_obj.name,
+                    "email": user_obj.email,
+                    "wallet_balance": wallet.amount
+                }
+                self.status_code = status.HTTP_200_OK
+            else:
+                self.status_code = status.HTTP_401_UNAUTHORIZED
+
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+
+        return Response(data=self.profile_data,
+                        status=self.status_code,
+                        headers=self.resp_header)
 
