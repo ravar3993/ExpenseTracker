@@ -7,7 +7,7 @@ from rest_framework.views import APIView
 
 from expense_tracker import settings
 from user.utils import authorize_user_jwt
-from wallet.models import Wallet
+from wallet.models import Wallet, WalletTransaction
 
 
 class WalletBalance(APIView):
@@ -58,3 +58,41 @@ class WalletBalance(APIView):
         return Response(data={"balance": self.balance},
                         status=self.status_code,
                         headers=self.resp_header)
+
+
+class WalletTransactionView(APIView):
+    resp_header = {
+        "Content-Type": "multipart/form-data",
+        "Access-Control-Allow-Origin": '*'
+    }
+    status_code = None
+    result_data = []
+
+    def get(self, request, *args, **kwargs):
+        try:
+
+            # Retrieve all data from request
+            is_authorized, user_obj = authorize_user_jwt(jwt_token=request.headers['Authorization'])
+            if is_authorized:
+                # Get all transaction data for a user
+                trans_data = WalletTransaction.objects.filter(user=user_obj)
+                for data in trans_data:
+                    data_row = {
+                        'transaction_id': data.transaction_id,
+                        'amount': data.amount,
+                        'source': data.source,
+                        'type': WalletTransaction.TRANSACTION_CODE_TYPE[data.type]
+                    }
+                    self.result_data.append(data_row)
+                self.status_code = status.HTTP_200_OK
+            else:
+                self.status_code = status.HTTP_401_UNAUTHORIZED
+
+        except Exception as e:
+            print(e)
+            traceback.print_exc()
+
+        return Response(data={"data_source": self.result_data},
+                        status=self.status_code,
+                        headers=self.resp_header)
+

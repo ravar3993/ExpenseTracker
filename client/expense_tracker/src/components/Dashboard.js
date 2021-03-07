@@ -64,7 +64,7 @@ class Dashboard extends Component {
             </Menu>
             </div>
             <div className="header-wallet">
-                <Wallet />
+                <Wallet wallet_state="display"/>
             </div>
             </Header>
            

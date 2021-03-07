@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 import Profile from './Profile'
 import WalletActivity from './WalletActivity'
+import Expenses from './Expenses'
 const { Header, Sider, Content } = Layout;
 
 
@@ -18,7 +19,7 @@ class DashboardView extends Component {
         }else if(this.props.view_name === "wallet"){
             view_content = <WalletActivity />
         }else if(this.props.view_name === "expense"){
-            view_content = "Expense coming soon!"
+            view_content = <Expenses />
         }else if(this.props.view_name === "profile"){
             view_content = <Profile />
         }

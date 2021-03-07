@@ -32,14 +32,19 @@ class WalletTransaction(models.Model):
     CREDIT = 1
     DEBIT = 2
 
+    TRANSACTION_CODE_TYPE = {
+        CREDIT: 'CREDIT',
+        DEBIT: 'DEBIT'
+    }
+
     TRANSACTION_TYPE_CODE = {
         'CREDIT': CREDIT,
         'DEBIT': DEBIT
     }
 
     TRANSACTION_TYPE = [
-        ('CREDITED', CREDIT),
-        ('DEBITED', DEBIT)
+        (CREDIT, 'CREDITED'),
+        (DEBIT, 'DEBITED')
     ]
 
     transaction_id = models.CharField(null=False,  max_length=50)
@@ -85,8 +90,8 @@ def create_transaction(sender, instance, raw, using, update_fields, **kwargs):
      :return:
      """
     try:
-        wallet = Wallet.objects.get(user=instance.user)
-        prev_balance = wallet.latest('modified_date')
+        wallet = Wallet.objects.filter(user=instance.user)
+        prev_balance = wallet.latest('modified_date').amount
     except ObjectDoesNotExist:
         prev_balance = 0
     updated_balance = instance.amount
@@ -107,7 +112,7 @@ def create_transaction(sender, instance, raw, using, update_fields, **kwargs):
         )
 
 
-post_save.connect(create_transaction, sender=Wallet)
+pre_save.connect(create_transaction, sender=Wallet)
 
 
 def generate_transaction_id(sender, instance, raw, using, update_fields, **kwargs):
@@ -123,7 +128,7 @@ def generate_transaction_id(sender, instance, raw, using, update_fields, **kwarg
     if instance and not instance.transaction_id:
         try:
             try:
-                last_trans = WalletTransaction.objects.latest('transaction_id')
+                last_trans = WalletTransaction.objects.latest('transaction_id').transaction_id
             except ObjectDoesNotExist:
                 last_trans = 'trans-' + str(0)
             new_trans = int(last_trans[6:]) + 1
