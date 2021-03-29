@@ -12,7 +12,8 @@ class LoginForm extends Component {
         super()
         this.state = {
             redirect: "/dashboard",
-            user_validated: false
+            user_validated: false,
+            token_created: false
           }
     }
 
@@ -28,18 +29,21 @@ class LoginForm extends Component {
         }
         fetch(configData.SERVER_URL + "/user/api/sign_in/", fetchData)
           .then(response => {
-            if (response.ok) {
+            if(response.ok){
               this.setState({
                 user_validated: true
               })
             }
-            console.log(response)
             return response.json()
           })
           .then(
             (result) => {
-              if (this.state.user_validated){
+              console.log(result)
+              if(this.state.user_validated){
                 localStorage.setItem('token',JSON.stringify(result['token']));
+                this.setState({
+                  token_created: true
+                })
               }
             },
             (error) => {
@@ -101,7 +105,7 @@ class LoginForm extends Component {
         </Form.Item>
         </Form>
         )
-        if (this.state.user_validated){
+        if (this.state.user_validated && this.state.token_created){
             return <Redirect to={this.state.redirect} /> 
         }else{
             return login_form

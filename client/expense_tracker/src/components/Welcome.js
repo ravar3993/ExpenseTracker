@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Redirect } from "react-router-dom";
 import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import '../styles/welcome.css'
@@ -10,7 +11,9 @@ class Welcome extends Component {
     constructor(){
         super()
         this.state = {
-            isLogin: true
+            isLogin: true,
+            token: localStorage.getItem('token'),
+            redirect: '/dashboard'
         }
     }
 
@@ -31,6 +34,11 @@ class Welcome extends Component {
     }
 
     render(){
+        if(this.state.token != null){
+            return <Redirect to={this.state.redirect} />
+        }
+
+
         let comp;
         if(this.state.isLogin){
             comp = <LoginForm />

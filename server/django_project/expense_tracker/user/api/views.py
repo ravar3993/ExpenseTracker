@@ -18,6 +18,7 @@ class SignUp(APIView):
     message = None
     response_code = None
     status_code = None
+    session_token = None
 
     def post(self, request, *args, **kwargs):
         try:
@@ -28,18 +29,28 @@ class SignUp(APIView):
             elif request.data['email'] and request.data['username'] and request.data['password']:
                 if not check_user_exists(request.data):
                     user_registered = register_user(request.data)
-                    if user_registered:
+                    is_validated, session_token = validate_user(request.data)
+                    if user_registered and is_validated:
                         self.response_code = c.LOGIN_RESPONSE_CODE[4]
                         self.status_code = status.HTTP_200_OK
                         self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
+                        self.session_token = session_token
                     else:
                         self.response_code = c.LOGIN_RESPONSE_CODE[5]
                         self.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
                         self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
                 else:
-                    self.response_code = c.LOGIN_RESPONSE_CODE[3]
-                    self.status_code = status.HTTP_200_OK
-                    self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
+                    is_validated, session_token = validate_user(request.data)
+                    if is_validated:
+                        self.response_code = c.LOGIN_RESPONSE_CODE[3]
+                        self.status_code = status.HTTP_200_OK
+                        self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
+                        self.session_token = session_token
+                    else:
+                        self.response_code = c.LOGIN_RESPONSE_CODE[6]
+                        self.status_code = status.HTTP_400_BAD_REQUEST
+                        self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
+
             else:
                 self.response_code = c.LOGIN_RESPONSE_CODE[6]
                 self.status_code = status.HTTP_400_BAD_REQUEST
@@ -52,9 +63,8 @@ class SignUp(APIView):
             self.status_code = status.HTTP_500_INTERNAL_SERVER_ERROR
             self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
 
-        return Response(data={"resp_msg": self.message, "resp_code": self.response_code},
-                        status=self.status_code,
-                        headers=self.resp_header)
+        resp_data = {"resp_msg": self.message, "resp_code": self.response_code, "token": self.session_token}
+        return Response(data=resp_data, status=self.status_code, headers=self.resp_header)
 
 
 class SignIn(APIView):
@@ -78,7 +88,7 @@ class SignIn(APIView):
             else:
                 self.response_code = c.LOGIN_RESPONSE_CODE[1]
                 self.message = c.LOGIN_RESPONSE_MSG[self.response_code]
-                self.status_code = status.HTTP_200_OK
+                self.status_code = status.HTTP_401_UNAUTHORIZED
 
         except Exception as e:
             print(e)

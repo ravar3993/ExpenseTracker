@@ -39,7 +39,9 @@ class RegisterForm extends Component {
           })
           .then(
             (result) => {
-              alert(`${result.msg}`)
+              if(this.state.user_validated){
+                localStorage.setItem('token',JSON.stringify(result['token']));
+              }
             },
             (error) => {
               alert(error) 
@@ -89,7 +91,7 @@ class RegisterForm extends Component {
         </Form.Item>
 
         <Form.Item
-            name="confirm"
+            name="confirm_password"
             label="Confirm Password"
             dependencies={['password']}
             hasFeedback
