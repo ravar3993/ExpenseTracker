@@ -12,6 +12,8 @@ import {
   VideoCameraOutlined,
   UploadOutlined,
 } from '@ant-design/icons';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {Container, Navbar, Card, Row, Col, Nav} from 'react-bootstrap'
 
 const { SubMenu } = Menu;
 const { Header, Sider } = Layout;
@@ -23,7 +25,7 @@ class Dashboard extends Component {
             collapsed: false,
             view_name: "analysis",
             token: localStorage.getItem('token'),
-            redirect: '/'
+            redirect: '/',
         };
         
     }
@@ -42,45 +44,49 @@ class Dashboard extends Component {
     render() {
         if(this.state.token != null && typeof this.state.token !== 'undefined'){
             return (
-                <Layout className="dashboard-layout">
-                <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
-                    <div className="logo" />
-                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
-                    <Menu.Item key="1" icon={<UserOutlined />} onClick={() => {this.setState({view_name:"analysis"})}}>
-                        Analysis
-                    </Menu.Item>
-                    <Menu.Item key="2" icon={<VideoCameraOutlined />} onClick={() => {this.setState({view_name:"wallet"})}}>
-                        Wallet
-                    </Menu.Item>
-                    <Menu.Item key="3" icon={<UploadOutlined />} onClick={() => {this.setState({view_name:"expense"})}}>
-                        Expenses
-                    </Menu.Item>
-                    </Menu>
-                </Sider>
-                <Layout className="site-layout">
-                    <Header className="site-layout-background" style={{ padding: 0 }}>
-                    {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                        className: 'trigger',
-                        onClick: this.toggle,
-                    })}
-                  
-                    <div className="user-menu">
-                    <Menu mode="horizontal">
-                        <SubMenu key="SubMenu" icon={<UserOutlined />}>
-                            <Menu.Item onClick={() => {this.setState({view_name:"profile"})}}>Profile</Menu.Item>
-                            <Menu.Item onClick={this.onLogout}>Logout</Menu.Item>
-                        </SubMenu>
-                    </Menu>
-                    </div>
-                    <div className="header-wallet">
-                        <Wallet wallet_state="display"/>
-                    </div>
-                    </Header>
-                   
-                    <DashboardView view_name={this.state.view_name}/>
-                </Layout>
-                </Layout>
-            );
+                <>
+                <Container fluid>
+                    <Navbar bg="dark" variant="dark">
+                        <Navbar.Brand className="mr-auto" href="/">ExpenseTracker</Navbar.Brand>
+                        <Card className="mr-sm-2 wallet-card" bg="light" border="light">
+                            <Card.Title style={{fontSize: "18px"}}>Wallet Balance :</Card.Title>
+                            <Card.Subtitle md>300</Card.Subtitle>
+                        </Card>
+                    </Navbar>
+                    <Row>
+                        <Col>
+                            <Card className="dashboard-view">
+                            <Card.Title>{this.state.view_name}</Card.Title>
+                            </Card>
+                        </Col>
+                    </Row>
+                    <Row>
+                        <Col>
+                        <Nav variant="pills" className="justify-content-center" activeKey="1">
+                            <Nav.Item>
+                                <Nav.Link eventKey="1" href="/">
+                                    Analysis
+                                </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="2" href="/">
+                                    Expenses
+                                </Nav.Link>
+                            </Nav.Item>
+                            <Nav.Item>
+                                <Nav.Link eventKey="3" href="/">
+                                    Wallet
+                                </Nav.Link>
+                            </Nav.Item>
+                        </Nav>
+                        </Col>
+                        
+                    </Row>
+
+                </Container>
+                
+                </>
+            )
         }
         else{
             return <Redirect to={this.state.redirect} />

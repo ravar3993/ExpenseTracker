@@ -13,11 +13,14 @@ class LoginForm extends Component {
         this.state = {
             redirect: "/dashboard",
             user_validated: false,
-            token_created: false
+            token_created: false,
+            error_message: null
           }
+        this.onFinish = this.onFinish.bind(this)
     }
 
     onFinish = (values) => {
+        values.preventDefault();
         console.log('Received values of form: ', values);
         let formData = new FormData();
         formData.append('username',values['username'])
@@ -30,7 +33,7 @@ class LoginForm extends Component {
         fetch(configData.SERVER_URL + "/user/api/sign_in/", fetchData)
           .then(response => {
             if(response.ok){
-              this.setState({
+              this.setState({            
                 user_validated: true
               })
             }
@@ -44,6 +47,10 @@ class LoginForm extends Component {
                 this.setState({
                   token_created: true
                 })
+              }else{
+                this.setState({
+                  error_message: result['resp_msg']
+                })
               }
             },
             (error) => {
@@ -53,57 +60,22 @@ class LoginForm extends Component {
     }
 
     render() {
+        
         var login_form = (
-        <Form name="normal_login"
-        className="login-form"
-        id="signInF"
-        initialValues={{
-            remember: true,
-        }}
-        onFinish={this.onFinish}
-        >
-        <Form.Item
-            name="username"
-            rules={[
-            {
-                required: true,
-                message: 'Please input your Username!',
-            },
-            ]}
-        >
-            <Input prefix={<UserOutlined className="site-form-item-icon" />} placeholder="Username" />
-        </Form.Item>
-        <Form.Item
-            name="password"
-            rules={[
-            {
-                required: true,
-                message: 'Please input your Password!',
-            },
-            ]}
-        >
-            <Input
-            prefix={<LockOutlined className="site-form-item-icon" />}
-            type="password"
-            placeholder="Password"
-            />
-        </Form.Item>
-        <Form.Item>
-            <Form.Item name="remember" valuePropName="checked" noStyle>
-            <Checkbox>Remember me</Checkbox>
-            </Form.Item>
-
-            <a className="login-form-forgot" href="">
-            Forgot password
-            </a>
-        </Form.Item>
-
-        <Form.Item>
-            <Button type="primary" htmlType="submit" className="login-form-button">
-            Log in
-            </Button>
-        </Form.Item>
-        </Form>
+          <>
+          <div id="login-form-error" className="login-form-error">
+            {this.state.error_message}
+          </div>
+          <div className="login-form">
+            <form onSubmit={this.onFinish} method="POST">
+              <label for="username">UserName:</label>
+              <input type="text" id="username" name="username" /><br />
+              <label for="password">Password:</label>
+              <input type="password" id="password" name="password" /><br /><br />
+              <input type="submit" value="Submit" />
+            </form>
+          </div>
+          </>
         )
         if (this.state.user_validated && this.state.token_created){
             return <Redirect to={this.state.redirect} /> 

@@ -12,11 +12,13 @@ class RegisterForm extends Component {
         this.state = {
             redirect: "/dashboard",
             user_validated: false,
-            token_created: false
+            token_created: false,
+            error_message: null
           }
     }
-    form = () => {return Form.useForm()}
+    //form = () => {return Form.useForm()}
     onFinish = (values) => {
+        values.preventDefault()
         console.log('Received values of form: ', values);
         let formData = new FormData();
         formData.append('username',values['username'])
@@ -45,6 +47,10 @@ class RegisterForm extends Component {
                 this.setState({
                     token_created: true
                 })
+              }else{
+                this.setState({
+                    error_message: result['resp_msg']
+                })
               }
             },
             (error) => {
@@ -55,89 +61,24 @@ class RegisterForm extends Component {
   
     render() {
         let register_form = (
-            <Form
-        name="register"
-        onFinish={this.onFinish}
-        initialValues={{
-            prefix: '86'
-        }}
-        scrollToFirstError
-        >
-        <Form.Item
-            name="email"
-            label="E-mail"
-            rules={[
-            {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-            },
-            {
-                required: true,
-                message: 'Please input your E-mail!',
-            },
-            ]}
-        >
-            <Input />
-        </Form.Item>
-
-        <Form.Item
-            name="password"
-            label="Password"
-            rules={[
-            {
-                required: true,
-                message: 'Please input your password!',
-            },
-            ]}
-            hasFeedback
-        >
-            <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-            name="confirm_password"
-            label="Confirm Password"
-            dependencies={['password']}
-            hasFeedback
-            rules={[
-            {
-                required: true,
-                message: 'Please confirm your password!',
-            },
-            ({ getFieldValue }) => ({
-                validator(rule, value) {
-                if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                }
-
-                return Promise.reject('The two passwords that you entered do not match!');
-                },
-            }),
-            ]}
-        >
-            <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-            name="username"
-            label="Username"
-            rules={[
-            {
-                required: true,
-                message: 'Please input your username!',
-                whitespace: true,
-            },
-            ]}
-        >
-            <Input />
-        </Form.Item>
-
-        <Form.Item>
-            <Button type="primary" htmlType="submit" className="register-form-button">
-            Register
-            </Button>
-        </Form.Item>
-        </Form>
+           <>
+            <div id="login-form-error" className="login-form-error">
+            {this.state.error_message}
+            </div>
+            <div className="register-form">
+                <form onSubmit={this.onFinish} method="POST">
+                    <label for="username">UserName: </label>
+                    <input type="text" id="username" name="username" /><br />
+                    <label for="email">Email: </label>
+                    <input type="text" id="email" name="email" /><br />
+                    <label for="password">Password:</label>
+                    <input type="password" id="password" name="password" /><br />
+                    <label for="confirm_password">Confirm Password:</label>
+                    <input type="password" id="confirm_password" name="confirm_password" /><br /><br />
+                    <input type="submit" value="Submit" />
+                </form>
+            </div>
+           </>
         )
 
         if (this.state.user_validated && this.state.token_created){
