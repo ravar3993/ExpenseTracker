@@ -12,5 +12,30 @@
 
 .dashboard-view {
     padding: 5px;
-    min-height: 400px;
+    min-height: 600px;
+}
+
+.thumbnail-image {
+    width: 30px;
+    height: 30px;
+    mix-blend-mode: multiply;
+}
+
+.user-dropdown .dropdown-toggle:after { 
+    content: none 
+}
+
+.user-dropdown .dropdown-menu { 
+    right: -20px;
+    left: auto;
+    font-size: small; 
+}
+
+.nav-pills .nav-link {
+    color: #343a40
+}
+
+.nav-pills .nav-link.active {
+    color: white;
+    background-color: #343a40 !important;
 }

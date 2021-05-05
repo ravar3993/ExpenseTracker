@@ -1,9 +1,9 @@
 import React, { Component, useState } from 'react'
 import 'antd/dist/antd.css';
 import '../styles/registerForm.css'
-import { Form,Input,Button } from 'antd';
 import configData from "../configData.json"
 import { Redirect } from "react-router-dom";
+import {Row, Col, Form, Button, Container, Alert } from 'react-bootstrap'
 
 
 class RegisterForm extends Component {
@@ -21,10 +21,10 @@ class RegisterForm extends Component {
         values.preventDefault()
         console.log('Received values of form: ', values);
         let formData = new FormData();
-        formData.append('username',values['username'])
-        formData.append('email',values['email'])
-        formData.append('password',values['password'])
-        formData.append('confirm_password',values['confirm_password'])
+        formData.append('username',document.getElementById('username').value)
+        formData.append('email',document.getElementById('email').value)
+        formData.append('password',document.getElementById('password').value)
+        formData.append('confirm_password',document.getElementById('confirm_password').value)
 
         let fetchData = { 
           method: 'POST',
@@ -60,24 +60,53 @@ class RegisterForm extends Component {
       }
   
     render() {
+        let error_message = null
+        if (this.state.error_message !== null){
+            error_message = (
+              <Alert variant="danger" onClose={() => {this.setState({
+                error_message: null
+              })}} dismissible>
+                {this.state.error_message}
+              </Alert>
+            )
+        }
         let register_form = (
            <>
-            <div id="login-form-error" className="login-form-error">
-            {this.state.error_message}
-            </div>
-            <div className="register-form">
-                <form onSubmit={this.onFinish} method="POST">
-                    <label for="username">UserName: </label>
-                    <input type="text" id="username" name="username" /><br />
-                    <label for="email">Email: </label>
-                    <input type="text" id="email" name="email" /><br />
-                    <label for="password">Password:</label>
-                    <input type="password" id="password" name="password" /><br />
-                    <label for="confirm_password">Confirm Password:</label>
-                    <input type="password" id="confirm_password" name="confirm_password" /><br /><br />
-                    <input type="submit" value="Submit" />
-                </form>
-            </div>
+            <Container>
+            <Row xs={8} className="justify-content-center error_message">
+             {error_message}
+            </Row>
+            <Row className="justify-content-center">
+              <Form onSubmit={this.onFinish} method="POST">
+              <Form.Group as={Row} controlId="formPlaintextEmail">
+                  <Col sm="15">
+                    <Form.Control id="email" name="email" type="Email" placeholder="Email" />
+                  </Col>
+                </Form.Group>
+                
+                <Form.Group as={Row} controlId="formPlaintextEmail">
+                  <Col sm="15">
+                    <Form.Control id="username" name="username" placeholder="Username" />
+                  </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                  <Col sm="15">
+                    <Form.Control id="password" name="password" type="password" placeholder="Password" />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                  <Col sm="15">
+                    <Form.Control id="confirm_password" name="confirm_password" type="password" placeholder="Confirm Password" />
+                  </Col>
+                </Form.Group>
+                <Button variant="dark" type="submit">
+                    Register
+                </Button>
+              </Form>
+            </Row>
+          
+          </Container>
            </>
         )
 

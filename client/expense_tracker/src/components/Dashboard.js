@@ -5,15 +5,10 @@ import DashboardView from './DashboardView'
 import 'antd/dist/antd.css';
 import '../styles/dashboard.css';
 import { Layout, Menu } from 'antd';
-import {
-  MenuUnfoldOutlined,
-  MenuFoldOutlined,
-  UserOutlined,
-  VideoCameraOutlined,
-  UploadOutlined,
-} from '@ant-design/icons';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Container, Navbar, Card, Row, Col, Nav} from 'react-bootstrap'
+import {Container, Navbar, Card, Row, Col, Nav, NavDropdown, InputGroup, FormControl} from 'react-bootstrap'
+import user_logo from '../images/user.png'
+import configData from "../configData.json"
 
 const { SubMenu } = Menu;
 const { Header, Sider } = Layout;
@@ -26,8 +21,40 @@ class Dashboard extends Component {
             view_name: "analysis",
             token: localStorage.getItem('token'),
             redirect: '/',
+            wallet_balance: 0,
+            username: "test-user",
+            email: "example@example.com",
+            nav_key: "2" 
         };
+        this.getUserProfile = this.getUserProfile.bind(this)
         
+    }
+
+    getUserProfile = () => {
+        let fetchData = {
+            method: 'GET',
+            headers: {"Authorization" : this.state.token}
+        }
+        fetch(configData.SERVER_URL + "/user/api/profile/", fetchData)
+            .then(response => {
+                return response.json()
+            }).then(
+                (result) => {
+                    this.setState({
+                        wallet_balance: result['wallet_balance'],
+                        username: result['username'],
+                        email: result['email']
+                    })
+                },
+                (error) => {
+                    console.log(error)
+                }
+            )
+    }
+
+
+    componentDidMount() {
+        this.getUserProfile()
     }
       
     toggle = () => {
@@ -41,40 +68,96 @@ class Dashboard extends Component {
         window.location.reload(false);
     }
 
-    render() {
+    navClickHandler = (eventKey) => {
+        this.setState({
+            nav_key: eventKey
+        })
+        switch(eventKey) {
+            case "1":
+                this.setState({
+                    view_name: 'analysis'
+                })
+                break;
+            case "2":
+                this.setState({
+                    view_name: 'expense'
+                })
+                break;
+            case "3":
+                this.setState({
+                    view_name: 'wallet'
+                })
+                break;
+            case "4.1":
+                this.setState({
+                    view_name: 'profile'
+                })
+                break;
+            default:
+                this.setState({
+                    view_name: 'analysis'
+                })
+        }
+    }
+
+    render() { 
         if(this.state.token != null && typeof this.state.token !== 'undefined'){
             return (
                 <>
                 <Container fluid>
-                    <Navbar bg="dark" variant="dark">
-                        <Navbar.Brand className="mr-auto" href="/">ExpenseTracker</Navbar.Brand>
-                        <Card className="mr-sm-2 wallet-card" bg="light" border="light">
-                            <Card.Title style={{fontSize: "18px"}}>Wallet Balance :</Card.Title>
-                            <Card.Subtitle md>300</Card.Subtitle>
-                        </Card>
+                    <Navbar bg="dark" variant="dark" sticky="top" expand="lg">
+                        <Navbar.Brand href="/" className="mr-auto">ExpenseTracker</Navbar.Brand>
+                        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+                        <InputGroup className="justify-content-end" style={{width: "100px"}}>
+                            <InputGroup.Prepend>
+                                <InputGroup.Text>{'\u20B9'}</InputGroup.Text>
+                            </InputGroup.Prepend>
+                            <FormControl
+                                type="number"
+                                placeholder={this.state.wallet_balance}
+                                readOnly
+                            />
+                        </InputGroup>
+                        <NavDropdown onSelect={(eventKey) => this.navClickHandler(eventKey)}
+                                    className="user-dropdown justify-content-end" 
+                                    title={
+                                            <div className="pull-right">
+                                                <img className="thumbnail-image"
+                                                     src={user_logo}
+                                                />
+                                            </div>
+                                            } >
+                            <NavDropdown.Item >Logged in as <br /><p style={{color: "#6495ED"}}><b>{this.state.username}</b></p></NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item eventKey="4.1">Edit Profile</NavDropdown.Item>
+                            <NavDropdown.Item >Settings</NavDropdown.Item>
+                            <NavDropdown.Divider />
+                            <NavDropdown.Item onClick={this.onLogout} >Logout</NavDropdown.Item>
+                        </NavDropdown>
                     </Navbar>
                     <Row>
                         <Col>
-                            <Card className="dashboard-view">
-                            <Card.Title>{this.state.view_name}</Card.Title>
-                            </Card>
+                            <div className="dashboard-view">
+                                <DashboardView view_name={this.state.view_name}/>
+                            </div>
                         </Col>
                     </Row>
-                    <Row>
+                    <Row className="fixed-bottom mb-4 dashboard-nav-row">
                         <Col>
-                        <Nav variant="pills" className="justify-content-center" activeKey="1">
+                        <Nav onSelect={(eventKey) => this.navClickHandler(eventKey)} 
+                            id="dashboard-nav" variant="pills" className="justify-content-center" activeKey={this.state.nav_key}>
                             <Nav.Item>
-                                <Nav.Link eventKey="1" href="/">
+                                <Nav.Link eventKey="1">
                                     Analysis
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="2" href="/">
+                                <Nav.Link eventKey="2">
                                     Expenses
                                 </Nav.Link>
                             </Nav.Item>
                             <Nav.Item>
-                                <Nav.Link eventKey="3" href="/">
+                                <Nav.Link eventKey="3">
                                     Wallet
                                 </Nav.Link>
                             </Nav.Item>

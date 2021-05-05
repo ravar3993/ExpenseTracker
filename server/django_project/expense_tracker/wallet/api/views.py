@@ -13,10 +13,16 @@ from wallet.models import Wallet, WalletTransaction
 class WalletBalance(APIView):
     resp_header = {
         "Content-Type": "multipart/form-data",
-        "Access-Control-Allow-Origin": '*'
+        "Access-Control-Allow-Origin": '*',
+        "Access-Control-Allow-Headers": '*'
     }
     balance = None
     status_code = None
+
+    def options(self, request, *args, **kwargs):
+        self.status_code = status.HTTP_200_OK
+        return Response(status=self.status_code,
+                        headers=self.resp_header)
 
     def get(self, request, *args, **kwargs):
         try:
