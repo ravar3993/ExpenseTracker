@@ -1,11 +1,24 @@
-import React, { Component } from 'react'
+import React, { Component, useState } from 'react'
 import 'antd/dist/antd.css';
 import '../styles/loginForm.css'
-import { Form, Input, Button, Checkbox } from 'antd';
 import { UserOutlined, LockOutlined } from '@ant-design/icons';
 import configData from "../configData.json"
 import { Redirect } from "react-router-dom";
 import RegisterForm from './RegisterForm'
+import {Row, Col, Form, Button, Container, Alert } from 'react-bootstrap'
+
+function AlertDismissible(props) {
+  const [show, setShow] = useState(true);
+  let message = props.message
+  if (show && message !== null) {
+    return (
+      <Alert variant="danger" onClose={() => setShow(false)} dismissible>
+        {message}
+      </Alert>
+    );
+  }
+  return null
+}
 
 class LoginForm extends Component {
     constructor(){
@@ -20,11 +33,13 @@ class LoginForm extends Component {
     }
 
     onFinish = (values) => {
-        values.preventDefault();
-        console.log('Received values of form: ', values);
+        
+        console.log('Received values of form: ', values['username'], values['password']);
         let formData = new FormData();
-        formData.append('username',values['username'])
-        formData.append('password',values['password'])
+        let username = document.getElementById('username').value
+        let password = document.getElementById('password').value
+        formData.append('username',username)
+        formData.append('password',password)
   
         let fetchData = { 
           method: 'POST',
@@ -57,24 +72,46 @@ class LoginForm extends Component {
               console.log(error)
             }
           )
+          values.preventDefault();
     }
 
     render() {
-        
+        let error_message = null
+        if (this.state.error_message !== null){
+            error_message = (
+              <Alert variant="danger" onClose={() => {this.setState({
+                error_message: null
+              })}} dismissible>
+                {this.state.error_message}
+              </Alert>
+            )
+        }
         var login_form = (
           <>
-          <div id="login-form-error" className="login-form-error">
-            {this.state.error_message}
-          </div>
-          <div className="login-form">
-            <form onSubmit={this.onFinish} method="POST">
-              <label for="username">UserName:</label>
-              <input type="text" id="username" name="username" /><br />
-              <label for="password">Password:</label>
-              <input type="password" id="password" name="password" /><br /><br />
-              <input type="submit" value="Submit" />
-            </form>
-          </div>
+          <Container>
+            <Row xs={8} className="justify-content-center error_message">
+             {error_message}
+            </Row>
+            <Row className="justify-content-center">
+              <Form onSubmit={this.onFinish} method="POST">
+                <Form.Group as={Row} controlId="formPlaintextEmail">
+                  <Col sm="15">
+                    <Form.Control id="username" name="username" placeholder="Username" />
+                  </Col>
+                </Form.Group>
+
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                  <Col sm="15">
+                    <Form.Control id="password" name="password" type="password" placeholder="Password" />
+                  </Col>
+                </Form.Group>
+                <Button variant="dark" type="submit">
+                  Login
+                </Button>
+              </Form>
+            </Row>
+          
+          </Container>
           </>
         )
         if (this.state.user_validated && this.state.token_created){

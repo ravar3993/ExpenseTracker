@@ -4,7 +4,7 @@ import LoginForm from './LoginForm'
 import RegisterForm from './RegisterForm'
 import '../styles/welcome.css'
 import 'antd/dist/antd.css';
-import { Button } from 'antd';
+import { Button, Nav } from 'react-bootstrap';
 
 
 class Welcome extends Component {
@@ -47,10 +47,14 @@ class Welcome extends Component {
         }
         return (
             <div class="login-register">
-                <div class="login-register-button">
-                <span><Button type="primary" onClick={this.loginClickHandler}>Login</Button></span>
-                <span><Button type="primary" onClick={this.registerClickHandler}>Register</Button></span>
-                </div>
+                <Nav justify variant="pills" defaultActiveKey="1">
+                <Nav.Item>
+                    <Nav.Link eventKey="1" onClick={this.loginClickHandler}>Login</Nav.Link>
+                </Nav.Item>
+                <Nav.Item>
+                    <Nav.Link eventKey="2" onClick={this.registerClickHandler}>Register</Nav.Link>
+                </Nav.Item>
+                </Nav>
                 <div class="login-register-form">{comp}</div>
             </div>
         )
