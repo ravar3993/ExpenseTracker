@@ -1,0 +1,30 @@
+.login-register {
+    width: 500px;
+	height: 550px;
+	
+	position: absolute;
+	top:0;
+	bottom: 0;
+	left: 0;
+	right: 0;
+  	
+    margin: auto;
+    border: solid 0.5px grey;
+
+}
+
+.login-register-form {
+    margin-top: 80px !important;
+    margin: auto;
+    width: 400px;
+    height: 400px;
+}
+
+.login-register-button {
+    margin:auto;
+    width: 80%;
+}
+
+.login-register-button span {
+    width: 167px;
+}

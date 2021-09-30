@@ -1,0 +1,55 @@
+.trigger {
+font-size: 18px;
+line-height: 64px;
+padding: 0 24px;
+cursor: pointer;
+transition: color 0.3s;
+}
+  
+.trigger:hover {
+color: #1890ff;
+}
+
+.logo {
+height: 52px;
+background: rgba(255, 255, 255, 0.3);
+margin: 16px;
+}
+
+.site-layout .site-layout-background {
+background: #fff;
+}
+
+.dashboard-layout{
+    height: 100vh;
+    overflow: auto;
+}
+
+.header-wallet{
+    float: right;
+    width: 200px;
+}
+
+.user-menu{
+    float: right;
+    width: 150px;
+}
+
+.user-menu .anticon-user{
+    font-size: 30px;
+}
+
+#wallet-balance {
+    display: inline-block;
+    margin-right: 20px;
+}
+
+#wallet-balance-form #balance-input{
+    font-size: 24px;
+    margin-left: 5px;
+    height: 36px;
+}
+
+#wallet-balance-form #balance-input-currency{
+    font-size: 24px;
+}

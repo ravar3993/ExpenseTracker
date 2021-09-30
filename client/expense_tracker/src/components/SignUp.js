@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import '../styles/loginPage.css'
+import configData from "../configData.json"
 
 class SignUp extends Component {
     constructor(){
@@ -11,6 +12,28 @@ class SignUp extends Component {
         confirm_password:""
       }
     }
+
+    handleSubmit = (e) => {
+      let signUpForm = document.getElementById('signUpF');
+      let formData = new FormData(signUpForm);
+
+      let fetchData = { 
+        method: 'POST',
+        body: formData
+      }
+      e.preventDefault()
+      fetch(configData.SERVER_URL + "/user/api/sign_up/", fetchData)
+        .then(res => res.json())
+        .then(
+          (result) => {
+            alert(`${result.msg}`)
+          },
+          (error) => {
+            alert(error) 
+          }
+        )
+    }
+
 
     changeHandler = (e) => {
       this.setState({
@@ -27,7 +50,7 @@ class SignUp extends Component {
         return (
           <div>
             <h3 id="login-tag">REGISTER</h3>
-            <form className="signUpForm">
+            <form className="signUpForm" id="signUpF">
               <table>
                 <tbody>
                 <tr>
@@ -55,7 +78,7 @@ class SignUp extends Component {
                   </td>
                 </tr>
                 <tr>
-                  <td><button id="login-submit" type='submit'>Create Account</button></td>
+                  <td><button id="login-submit" type='submit' onClick={this.handleSubmit}>Create Account</button></td>
                 </tr>
                 </tbody>
               </table>
