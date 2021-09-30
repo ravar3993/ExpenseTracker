@@ -1,9 +1,9 @@
 import React, { Component, useState } from 'react'
 import 'antd/dist/antd.css';
 import '../styles/registerForm.css'
-import { Form,Input,Button } from 'antd';
 import configData from "../configData.json"
 import { Redirect } from "react-router-dom";
+import {Row, Col, Form, Button, Container, Alert } from 'react-bootstrap'
 
 
 class RegisterForm extends Component {
@@ -12,17 +12,19 @@ class RegisterForm extends Component {
         this.state = {
             redirect: "/dashboard",
             user_validated: false,
-            token_created: false
+            token_created: false,
+            error_message: null
           }
     }
-    form = () => {return Form.useForm()}
+    //form = () => {return Form.useForm()}
     onFinish = (values) => {
+        values.preventDefault()
         console.log('Received values of form: ', values);
         let formData = new FormData();
-        formData.append('username',values['username'])
-        formData.append('email',values['email'])
-        formData.append('password',values['password'])
-        formData.append('confirm_password',values['confirm_password'])
+        formData.append('username',document.getElementById('username').value)
+        formData.append('email',document.getElementById('email').value)
+        formData.append('password',document.getElementById('password').value)
+        formData.append('confirm_password',document.getElementById('confirm_password').value)
 
         let fetchData = { 
           method: 'POST',
@@ -45,6 +47,10 @@ class RegisterForm extends Component {
                 this.setState({
                     token_created: true
                 })
+              }else{
+                this.setState({
+                    error_message: result['resp_msg']
+                })
               }
             },
             (error) => {
@@ -54,90 +60,54 @@ class RegisterForm extends Component {
       }
   
     render() {
+        let error_message = null
+        if (this.state.error_message !== null){
+            error_message = (
+              <Alert variant="danger" onClose={() => {this.setState({
+                error_message: null
+              })}} dismissible>
+                {this.state.error_message}
+              </Alert>
+            )
+        }
         let register_form = (
-            <Form
-        name="register"
-        onFinish={this.onFinish}
-        initialValues={{
-            prefix: '86'
-        }}
-        scrollToFirstError
-        >
-        <Form.Item
-            name="email"
-            label="E-mail"
-            rules={[
-            {
-                type: 'email',
-                message: 'The input is not valid E-mail!',
-            },
-            {
-                required: true,
-                message: 'Please input your E-mail!',
-            },
-            ]}
-        >
-            <Input />
-        </Form.Item>
+           <>
+            <Container>
+            <Row xs={8} className="justify-content-center error_message">
+             {error_message}
+            </Row>
+            <Row className="justify-content-center">
+              <Form onSubmit={this.onFinish} method="POST">
+              <Form.Group as={Row} controlId="formPlaintextEmail">
+                  <Col sm="15">
+                    <Form.Control id="email" name="email" type="Email" placeholder="Email" />
+                  </Col>
+                </Form.Group>
+                
+                <Form.Group as={Row} controlId="formPlaintextEmail">
+                  <Col sm="15">
+                    <Form.Control id="username" name="username" placeholder="Username" />
+                  </Col>
+                </Form.Group>
 
-        <Form.Item
-            name="password"
-            label="Password"
-            rules={[
-            {
-                required: true,
-                message: 'Please input your password!',
-            },
-            ]}
-            hasFeedback
-        >
-            <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-            name="confirm_password"
-            label="Confirm Password"
-            dependencies={['password']}
-            hasFeedback
-            rules={[
-            {
-                required: true,
-                message: 'Please confirm your password!',
-            },
-            ({ getFieldValue }) => ({
-                validator(rule, value) {
-                if (!value || getFieldValue('password') === value) {
-                    return Promise.resolve();
-                }
-
-                return Promise.reject('The two passwords that you entered do not match!');
-                },
-            }),
-            ]}
-        >
-            <Input.Password />
-        </Form.Item>
-
-        <Form.Item
-            name="username"
-            label="Username"
-            rules={[
-            {
-                required: true,
-                message: 'Please input your username!',
-                whitespace: true,
-            },
-            ]}
-        >
-            <Input />
-        </Form.Item>
-
-        <Form.Item>
-            <Button type="primary" htmlType="submit" className="register-form-button">
-            Register
-            </Button>
-        </Form.Item>
-        </Form>
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                  <Col sm="15">
+                    <Form.Control id="password" name="password" type="password" placeholder="Password" />
+                  </Col>
+                </Form.Group>
+                <Form.Group as={Row} controlId="formPlaintextPassword">
+                  <Col sm="15">
+                    <Form.Control id="confirm_password" name="confirm_password" type="password" placeholder="Confirm Password" />
+                  </Col>
+                </Form.Group>
+                <Button variant="dark" type="submit">
+                    Register
+                </Button>
+              </Form>
+            </Row>
+          
+          </Container>
+           </>
         )
 
         if (this.state.user_validated && this.state.token_created){

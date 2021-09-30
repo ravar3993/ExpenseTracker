@@ -1,55 +1,41 @@
-.trigger {
-font-size: 18px;
-line-height: 64px;
-padding: 0 24px;
-cursor: pointer;
-transition: color 0.3s;
-}
-  
-.trigger:hover {
-color: #1890ff;
+.nav-brand {
+    
 }
 
-.logo {
-height: 52px;
-background: rgba(255, 255, 255, 0.3);
-margin: 16px;
+.wallet-card {
+    padding: 5px
 }
 
-.site-layout .site-layout-background {
-background: #fff;
+.wallet-card-col {
+
 }
 
-.dashboard-layout{
-    height: 100vh;
-    overflow: auto;
+.dashboard-view {
+    padding: 5px;
+    min-height: 600px;
 }
 
-.header-wallet{
-    float: right;
-    width: 200px;
+.thumbnail-image {
+    width: 30px;
+    height: 30px;
+    mix-blend-mode: multiply;
 }
 
-.user-menu{
-    float: right;
-    width: 150px;
+.user-dropdown .dropdown-toggle:after { 
+    content: none 
 }
 
-.user-menu .anticon-user{
-    font-size: 30px;
+.user-dropdown .dropdown-menu { 
+    right: -20px;
+    left: auto;
+    font-size: small; 
 }
 
-#wallet-balance {
-    display: inline-block;
-    margin-right: 20px;
+.nav-pills .nav-link {
+    color: #343a40
 }
 
-#wallet-balance-form #balance-input{
-    font-size: 24px;
-    margin-left: 5px;
-    height: 36px;
-}
-
-#wallet-balance-form #balance-input-currency{
-    font-size: 24px;
+.nav-pills .nav-link.active {
+    color: white;
+    background-color: #343a40 !important;
 }

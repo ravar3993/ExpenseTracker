@@ -8,3 +8,7 @@
   .login-form-button {
     width: 100%;
   }
+
+  .error_message {
+    height: 60px;
+  }
