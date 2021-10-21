@@ -12,6 +12,8 @@ djongo = "*"
 djangorestframework = "*"
 djangorestframework-simplejwt = "*"
 djangorestframework-jwt = "*"
+channels = "*"
+route = "*"
 
 [requires]
 python_version = "3.6"

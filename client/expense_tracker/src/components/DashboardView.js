@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Layout, Menu } from 'antd';
 import Profile from './Profile'
-import WalletActivity from './WalletActivity'
-import Expenses from './Expenses'
-const { Header, Sider, Content } = Layout;
-
+import WalletView from './WalletView'
+import ExpensesView from './ExpensesView'
+import {Container} from 'react-bootstrap'
+import AnalysisView from './AnalysisView';
 
 
 class DashboardView extends Component {
@@ -14,26 +14,27 @@ class DashboardView extends Component {
     
     render() {
         let view_content
-        if(this.props.view_name === "analysis"){
-            view_content = "Analysis coming soon!"
-        }else if(this.props.view_name === "wallet"){
-            view_content = <WalletActivity />
-        }else if(this.props.view_name === "expense"){
-            view_content = <Expenses />
-        }else if(this.props.view_name === "profile"){
-            view_content = <Profile />
+        switch(this.props.nav_key) {
+            case "1":
+                view_content = <AnalysisView />
+                break;
+            case "2":
+                view_content = <ExpensesView />
+                break;
+            case "3":
+                view_content = <WalletView />
+                break;
+            case "4.1":
+                view_content = <Profile />
+                break;
+            default:
+                view_content = <AnalysisView />
         }
+
         return (
-            <Content
-            className="site-layout-background"
-            style={{
-                margin: '24px 16px',
-                padding: 24,
-                minHeight: 280,
-            }}
-            >
+            <>
             {view_content}
-            </Content>
+            </>
         )
     }
 }

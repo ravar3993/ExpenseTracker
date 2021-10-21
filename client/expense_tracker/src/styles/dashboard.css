@@ -39,3 +39,43 @@
     color: white;
     background-color: #343a40 !important;
 }
+
+.aside-nav {
+    padding: 20px;
+    height: 400px;
+    margin-left: 40px;
+    margin-top: 50px;
+    border-style: ridge;
+    margin-right: 20px;
+    background-color: #343a40;
+    border-radius: 30px;
+}
+
+.aside-nav .nav-link {
+    color: white
+}
+
+.aside-nav .nav-link:hover {
+    color: white;
+}
+
+.aside-nav .nav-link.active {
+    border-radius: 25px;
+}
+
+.aside-nav .nav-link .active:hover {
+    color: white
+}
+
+.dashboard-content-view {
+    padding: 25px;
+}
+
+.edit-wallet-nav .nav-link {
+    color: #343a40
+}
+
+.edit-wallet-nav .nav-link.active {
+    color: white !important;
+    background-color: #343a40 !important;
+}

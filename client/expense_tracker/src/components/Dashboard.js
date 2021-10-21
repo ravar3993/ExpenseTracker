@@ -55,6 +55,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         this.getUserProfile()
+        //setInterval(this.getUserProfile.bind(this), 3000)
     }
       
     toggle = () => {
@@ -72,32 +73,6 @@ class Dashboard extends Component {
         this.setState({
             nav_key: eventKey
         })
-        switch(eventKey) {
-            case "1":
-                this.setState({
-                    view_name: 'analysis'
-                })
-                break;
-            case "2":
-                this.setState({
-                    view_name: 'expense'
-                })
-                break;
-            case "3":
-                this.setState({
-                    view_name: 'wallet'
-                })
-                break;
-            case "4.1":
-                this.setState({
-                    view_name: 'profile'
-                })
-                break;
-            default:
-                this.setState({
-                    view_name: 'analysis'
-                })
-        }
     }
 
     render() { 
@@ -108,7 +83,7 @@ class Dashboard extends Component {
                     <Navbar bg="dark" variant="dark" sticky="top" expand="lg">
                         <Navbar.Brand href="/" className="mr-auto">ExpenseTracker</Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
-                        <InputGroup className="justify-content-end" style={{width: "100px"}}>
+                        <InputGroup className="justify-content-end" style={{width: "200px"}}>
                             <InputGroup.Prepend>
                                 <InputGroup.Text>{'\u20B9'}</InputGroup.Text>
                             </InputGroup.Prepend>
@@ -138,7 +113,7 @@ class Dashboard extends Component {
                     <Row>
                         <Col>
                             <div className="dashboard-view">
-                                <DashboardView view_name={this.state.view_name}/>
+                                <DashboardView nav_key={this.state.nav_key}/>
                             </div>
                         </Col>
                     </Row>
