@@ -10,6 +10,7 @@ services:
       - 27017:27017
     volumes:
       - et_db_vol:/data/db
+
   redis:
     image: redis:latest
     ports:
@@ -17,5 +18,6 @@ services:
     volumes:
       - ./config/redis.conf:/redis.conf
     command: [ "redis-server", "/redis.conf" ]
+
 volumes:
   et_db_vol:
