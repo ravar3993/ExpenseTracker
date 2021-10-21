@@ -55,7 +55,7 @@ class Dashboard extends Component {
 
     componentDidMount() {
         this.getUserProfile()
-        //setInterval(this.getUserProfile.bind(this), 3000)
+        setInterval(this.getUserProfile.bind(this), 3000)
     }
       
     toggle = () => {
